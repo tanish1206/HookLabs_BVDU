@@ -1,0 +1,8 @@
+app/hooks/useVideoExport.ts(151,16): error TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES5'. Modules are automatically in strict mode.
+app/hooks/useVideoExport.ts(157,9): error TS18047: 'ctx' is possibly 'null'.
+app/hooks/useVideoExport.ts(161,24): error TS2345: Argument of type 'CanvasRenderingContext2D | null' is not assignable to parameter of type 'CanvasRenderingContext2D'.
+  Type 'null' is not assignable to type 'CanvasRenderingContext2D'.
+app/hooks/useVideoExport.ts(165,9): error TS18047: 'ctx' is possibly 'null'.
+app/hooks/useVideoExport.ts(166,9): error TS18047: 'ctx' is possibly 'null'.
+app/hooks/useVideoExport.ts(167,9): error TS18047: 'ctx' is possibly 'null'.
+app/hooks/useVideoExport.ts(168,9): error TS18047: 'ctx' is possibly 'null'.

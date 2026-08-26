@@ -1,0 +1,7 @@
+﻿app/components/VideoComposer.tsx(339,34): error TS2304: Cannot find name 'trend'.
+app/components/VideoComposer.tsx(339,43): error TS2304: Cannot find name 'hook'.
+app/components/VideoComposer.tsx(340,33): error TS2304: Cannot find name 'hook'.
+app/components/VideoComposer.tsx(341,29): error TS2304: Cannot find name 'hook'.
+app/components/VideoComposer.tsx(342,28): error TS2304: Cannot find name 'hook'.
+app/components/VideoComposer.tsx(343,41): error TS2304: Cannot find name 'hook'.
+app/components/VideoComposer.tsx(344,32): error TS2304: Cannot find name 'hook'.

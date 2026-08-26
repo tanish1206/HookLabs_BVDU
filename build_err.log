@@ -1,0 +1,23 @@
+
+> hooklabs-ai@0.1.0 build
+> node --max_old_space_size=4096 ./node_modules/next/dist/bin/next build
+
+  ▲ Next.js 14.2.29
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/components/providers/SupabaseProvider.tsx:37:127
+Type error: An object literal cannot have multiple properties with the same name.
+
+[0m [90m 35 |[39m       } [36melse[39m [36mif[39m (mockEmail) {[0m
+[0m [90m 36 |[39m         [90m// Create dummy user from cookie[39m[0m
+[0m[31m[1m>[22m[39m[90m 37 |[39m         setUser({ id[33m:[39m mockEmail[33m,[39m email[33m:[39m mockEmail[33m,[39m app_metadata[33m:[39m {}[33m,[39m user_metadata[33m:[39m {}[33m,[39m aud[33m:[39m [32m"authenticated"[39m[33m,[39m created_at[33m:[39m [32m""[39m[33m,[39m id[33m:[39m mockEmail } [36mas[39m any)[33m;[39m[0m
+[0m [90m    |[39m                                                                                                                               [31m[1m^[22m[39m[0m
+[0m [90m 38 |[39m         setSession({ user[33m:[39m { id[33m:[39m mockEmail }[33m,[39m access_token[33m:[39m [32m"mock"[39m } [36mas[39m any)[33m;[39m[0m
+[0m [90m 39 |[39m       } [36melse[39m {[0m
+[0m [90m 40 |[39m         setSession([36mnull[39m)[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

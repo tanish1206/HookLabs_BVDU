@@ -1,0 +1,63 @@
+
+> hooklabs-ai@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.29
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (140kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/30) ...
+   Generating static pages (7/30) 
+   Generating static pages (14/30) 
+   Generating static pages (22/30) 
+ ✓ Generating static pages (30/30)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.54 kB         159 kB
+├ ○ /_not-found                          873 B          88.2 kB
+├ ○ /abtest                              1.9 kB         91.9 kB
+├ ƒ /api/cron/ingest-trends              0 B                0 B
+├ ƒ /api/cron/refresh-trends             0 B                0 B
+├ ƒ /api/export-video                    0 B                0 B
+├ ƒ /api/export-video/[renderId]         0 B                0 B
+├ ƒ /api/feedback                        0 B                0 B
+├ ƒ /api/feedback-analysis               0 B                0 B
+├ ƒ /api/feedback/analyze                0 B                0 B
+├ ƒ /api/gallery                         0 B                0 B
+├ ƒ /api/generate-script                 0 B                0 B
+├ ƒ /api/save-video                      0 B                0 B
+├ ƒ /api/stripe/checkout                 0 B                0 B
+├ ƒ /api/stripe/webhook                  0 B                0 B
+├ ƒ /api/trends                          0 B                0 B
+├ ƒ /api/tts                             0 B                0 B
+├ ƒ /api/videos                          0 B                0 B
+├ ƒ /api/videos/[id]                     0 B                0 B
+├ ƒ /api/videos/[id]/public              0 B                0 B
+├ ƒ /api/webhook/trends-refreshed        0 B                0 B
+├ ƒ /auth/callback                       0 B                0 B
+├ ○ /auth/reset-password                 2.13 kB        89.4 kB
+├ ○ /dashboard                           2.98 kB          99 kB
+├ ○ /feedback                            3.63 kB        90.9 kB
+├ ○ /gallery                             2.73 kB        98.8 kB
+├ ○ /history                             3.33 kB        90.6 kB
+├ ○ /login                               2.53 kB        98.6 kB
+├ ○ /pipeline                            9.41 kB         154 kB
+├ ○ /pricing                             2.46 kB        89.8 kB
+└ ○ /signup                              2.63 kB        98.7 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/117-2368b85d58174b64.js       31.6 kB
+  ├ chunks/fd9d1056-dcb1b6ab95d8b360.js  53.6 kB
+  └ other shared chunks (total)          2.06 kB
+
+
+ƒ Middleware                             74.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
