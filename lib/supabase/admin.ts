@@ -17,3 +17,6 @@ export function getAdminClient(): SupabaseClient<Database> {
   });
   return _admin;
 }
+
+export const createAdminClient = getAdminClient;
+

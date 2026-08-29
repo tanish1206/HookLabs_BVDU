@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const { data: campaigns } = await supabase.from('campaigns').select('*');
     const { data: memory } = await supabase.from('creative_memory').select('*');
 
-    const totalSpend = campaigns?.reduce((acc, c) => acc + (Number(c.total_spend) || 0), 0) || 7860.0;
+    const totalSpend = campaigns?.reduce((acc: number, c: any) => acc + (Number(c.total_spend) || 0), 0) || 7860.0;
     const totalRevenue = totalSpend * 3.42;
     const blendedRoas = (totalRevenue / totalSpend).toFixed(2);
 

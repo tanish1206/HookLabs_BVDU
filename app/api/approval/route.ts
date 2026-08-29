@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      pending_count: requests?.filter((r) => r.status === 'pending').length || 0,
+      pending_count: requests?.filter((r: any) => r.status === 'pending').length || 0,
       data: requests || [],
     });
   } catch (err: any) {

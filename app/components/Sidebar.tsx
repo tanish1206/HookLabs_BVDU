@@ -3,14 +3,17 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, FileDiff, History, LineChart, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Megaphone, Brain, CheckSquare, BarChart3, Cpu, Sparkles, Settings, LogOut } from "lucide-react";
 import { useAuth } from "@/app/components/providers/SupabaseProvider";
 
 const NAV_ITEMS = [
-  { href: "/pipeline", label: "Pipeline", icon: LayoutDashboard },
-  { href: "/abtest", label: "A/B Test", icon: FileDiff },
-  { href: "/history", label: "History", icon: History },
-  { href: "/feedback", label: "Feedback Loop", icon: LineChart },
+  { href: "/dashboard", label: "Autopilot Dashboard", icon: LayoutDashboard },
+  { href: "/campaigns", label: "Campaign Intelligence", icon: Megaphone },
+  { href: "/intelligence", label: "Creative Memory", icon: Brain },
+  { href: "/approval", label: "Approval Center", icon: CheckSquare },
+  { href: "/attribution", label: "Attribution Reports", icon: BarChart3 },
+  { href: "/pipeline", label: "RocketRide Activity", icon: Cpu },
+  { href: "/generate", label: "Creative Studio", icon: Sparkles },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
