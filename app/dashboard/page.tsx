@@ -415,10 +415,23 @@ export default function AutopilotJudgeDashboard() {
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#a78bfa", marginBottom: 12 }}>"{v.hook}"</div>
                 <p style={{ fontSize: 12, color: "var(--muted)", margin: "0 0 14px 0", lineHeight: 1.4 }}>{v.script}</p>
 
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--muted)", paddingTop: 12, borderTop: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, color: "var(--muted)", paddingTop: 12, borderTop: "1px solid var(--border)" }}>
                   <span>Format: <strong>{v.format}</strong></span>
                   <span>Brand Safety: <strong style={{ color: "#34d399" }}>PASS</strong></span>
                 </div>
+
+                <Link
+                  href={`/generate?campaign=${encodeURIComponent(activeCampaign.name)}&platform=${v.platform || "meta"}&audience=founders&hook=${encodeURIComponent(v.hook)}`}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                    width: "100%", marginTop: 14, padding: "10px 0",
+                    background: idx === 2 ? "linear-gradient(135deg, #7c5cfc, #6366f1)" : "var(--surface)",
+                    border: idx === 2 ? "none" : "1px solid var(--border)",
+                    borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 700, textDecoration: "none"
+                  }}
+                >
+                  <Sparkles size={14} /> GENERATE RECOMMENDED CREATIVES IN STUDIO →
+                </Link>
               </div>
             ))}
           </div>

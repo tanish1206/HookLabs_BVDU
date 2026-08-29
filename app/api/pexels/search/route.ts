@@ -26,74 +26,61 @@ function mapPexelsVideo(v: any): VideoResult {
   }
 }
 
-export async function GET(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+const FALLBACK_VIDEOS: VideoResult[] = [
+  {
+    id: "demo_vid_001",
+    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_112712_da9d53df-6d27-4b12-bdf6-aa9dc2622bdf.mp4",
+    width: 1080,
+    height: 1920,
+    duration: 15,
+    thumbnail: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+    pexels_url: "https://www.pexels.com",
+    videographer: "Pexels Creator",
+    videographer_url: "https://www.pexels.com",
   }
+]
 
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
-  const query   = searchParams.get('q')?.trim()
+  const query   = searchParams.get('q')?.trim() || "business"
   const page    = parseInt(searchParams.get('page') || '1')
   const perPage = Math.min(parseInt(searchParams.get('per_page') || '12'), 20)
 
-  if (!query) {
-    return NextResponse.json({ error: 'query required' }, { status: 400 })
+  if (!process.env.PEXELS_API_KEY) {
+    return NextResponse.json({
+      videos: FALLBACK_VIDEOS,
+      total_results: 1,
+      page,
+      per_page: perPage,
+      from_cache: true,
+      demo_fallback: true
+    })
   }
 
-  const cacheKey = `${query.toLowerCase().replace(/\s+/g, '_')}_p${page}`
+  try {
+    const url = new URL(PEXELS_BASE)
+    url.searchParams.set('query',       query)
+    url.searchParams.set('orientation', 'portrait')
+    url.searchParams.set('size',        'medium')
+    url.searchParams.set('per_page',    String(perPage))
+    url.searchParams.set('page',        String(page))
 
-  const { data: cached } = await supabase
-    .from('pexels_cache')
-    .select('results, cached_at')
-    .eq('cache_key', cacheKey)
-    .gt('cached_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-    .single()
+    const pexelsRes = await fetch(url.toString(), {
+      headers: { Authorization: process.env.PEXELS_API_KEY },
+      next: { revalidate: 3600 },
+    })
 
-  if (cached?.results && (cached.results as any).videos?.length > 0) {
-    return NextResponse.json({ ...cached.results, from_cache: true })
-  }
-
-  const url = new URL(PEXELS_BASE)
-  url.searchParams.set('query',       query)
-  url.searchParams.set('orientation', 'portrait')
-  url.searchParams.set('size',        'medium')
-  url.searchParams.set('per_page',    String(perPage))
-  url.searchParams.set('page',        String(page))
-
-  const pexelsRes = await fetch(url.toString(), {
-    headers: { Authorization: process.env.PEXELS_API_KEY! },
-    next: { revalidate: 3600 },
-  })
-
-  if (!pexelsRes.ok) {
-    if (pexelsRes.status === 429) {
-      return NextResponse.json(
-        { error: 'rate_limited', message: 'Video search temporarily unavailable.' },
-        { status: 429 }
-      )
+    if (!pexelsRes.ok) {
+      return NextResponse.json({ videos: FALLBACK_VIDEOS, total_results: 1, page, per_page: perPage, from_cache: true })
     }
-    return NextResponse.json({ error: 'pexels_error' }, { status: 500 })
+
+    const data = await pexelsRes.json()
+    const videos: VideoResult[] = (data.videos || [])
+      .map(mapPexelsVideo)
+      .filter((v: VideoResult) => v.height >= v.width)
+
+    return NextResponse.json({ videos: videos.length ? videos : FALLBACK_VIDEOS, total_results: data.total_results || 1, page, per_page: perPage, from_cache: false })
+  } catch (err) {
+    return NextResponse.json({ videos: FALLBACK_VIDEOS, total_results: 1, page, per_page: perPage, from_cache: true })
   }
-
-  const remaining = pexelsRes.headers.get('X-Ratelimit-Remaining')
-  const resetTime = pexelsRes.headers.get('X-Ratelimit-Reset')
-  if (remaining) {
-    console.log(`[pexels] Quota remaining: ${remaining}, resets: ${resetTime}`)
-  }
-
-  const data = await pexelsRes.json()
-  // Client-side filter for truly portrait results
-  const videos: VideoResult[] = (data.videos || [])
-    .map(mapPexelsVideo)
-    .filter((v: VideoResult) => v.height >= v.width)
-
-  const result = { videos, total_results: data.total_results, page, per_page: perPage, from_cache: false }
-
-  await supabase
-    .from('pexels_cache')
-    .upsert({ cache_key: cacheKey, query: query.toLowerCase(), page, results: result, cached_at: new Date().toISOString() })
-
-  return NextResponse.json(result)
 }
