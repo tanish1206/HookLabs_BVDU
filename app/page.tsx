@@ -472,7 +472,7 @@ export default function CinematicLandingPage() {
               position: 'sticky',
               top: 120,
             }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.08)', pb: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 16 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#f87171' }} />
                   <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#fbbf24' }} />
