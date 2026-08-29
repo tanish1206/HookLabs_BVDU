@@ -1,0 +1,35 @@
+// RocketRide Test Pipeline: test_pipeline.pipe
+// Verifies foundational end-to-end communication between HookLabs backend and RocketRide multi-agent engine.
+
+pipeline "test_pipeline" {
+  description = "Minimal load-bearing test pipeline verifying RocketRide workflow execution and structured JSON response"
+
+  input {
+    message     = string
+    campaign_id = string
+  }
+
+  node "test_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "RocketRide Integration Tester"
+    prompt = """
+      You are the RocketRide Workflow Agent for HookLabs.
+      Process the input message: "{{input.message}}"
+      Target Campaign ID: "{{input.campaign_id}}"
+
+      Synthesize a structured campaign diagnostic response verifying:
+      1. Pipeline reachability
+      2. Multi-agent execution status
+      3. Strategic analysis of input message
+    """
+  }
+
+  output {
+    status      = "success"
+    source      = "rocketride"
+    campaign_id = "{{input.campaign_id}}"
+    analysis    = "{{test_agent.output.analysis}}"
+    verified_at = "{{test_agent.output.timestamp}}"
+  }
+}
