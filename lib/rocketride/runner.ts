@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { createAdminClient } from '../supabase/admin.js';
-import { RocketRideExecutionInput, RocketRideExecutionOutput } from './types.js';
+import { createAdminClient } from '../supabase/admin';
+import { RocketRideExecutionInput, RocketRideExecutionOutput } from './types';
 
 const ROCKETRIDE_API_KEY = process.env.ROCKETRIDE_API_KEY;
 const ROCKETRIDE_URI = process.env.ROCKETRIDE_URI || 'https://api.rocketride.ai';

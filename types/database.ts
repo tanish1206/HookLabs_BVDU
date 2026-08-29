@@ -89,6 +89,92 @@ export type Database = {
         Insert: Omit<Database["public"]["Tables"]["users_metadata"]["Row"], "created_at" | "updated_at">;
         Update: Partial<Database["public"]["Tables"]["users_metadata"]["Insert"]>;
       };
+      campaigns: {
+        Row: {
+          id: string;
+          user_id?: string;
+          name: string;
+          platform: string;
+          status: string;
+          daily_budget: number;
+          total_spend: number;
+          target_roas: number;
+          current_roas: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["campaigns"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["campaigns"]["Row"]>;
+      };
+      campaign_metrics: {
+        Row: {
+          id: string;
+          campaign_id: string;
+          timestamp?: string;
+          impressions: number;
+          clicks: number;
+          spend: number;
+          conversions: number;
+          revenue: number;
+          ctr: number;
+          cpc: number;
+          roas: number;
+        };
+        Insert: Partial<Database["public"]["Tables"]["campaign_metrics"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["campaign_metrics"]["Row"]>;
+      };
+      creative_memory: {
+        Row: {
+          id: string;
+          user_id?: string;
+          message_hook: string;
+          format_type: string;
+          audience_segment: string;
+          platform: string;
+          roas_multiplier: number;
+          ctr_lift: number;
+          sample_size: number;
+          confidence_score: number;
+          insights: string;
+          updated_at?: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["creative_memory"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["creative_memory"]["Row"]>;
+      };
+      approval_requests: {
+        Row: {
+          id: string;
+          campaign_id?: string | null;
+          action_type: string;
+          proposed_change: any;
+          current_budget?: number;
+          proposed_budget?: number;
+          risk_level: string;
+          confidence_score: number;
+          status: string;
+          reasoning: string;
+          created_at?: string;
+          reviewed_at?: string | null;
+        };
+        Insert: Partial<Database["public"]["Tables"]["approval_requests"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["approval_requests"]["Row"]>;
+      };
+      pipeline_runs: {
+        Row: {
+          id: string;
+          pipeline_name: string;
+          records_count: number;
+          execution_time_ms: number;
+          approx_cost: number;
+          status: string;
+          error_log?: string | null;
+          escalations_count: number;
+          trace_id: string;
+          created_at?: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["pipeline_runs"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["pipeline_runs"]["Row"]>;
+      };
     };
     Views: {};
     Functions: {};
