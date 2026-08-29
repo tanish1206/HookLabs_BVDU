@@ -1,62 +1,16 @@
-'use client';
+import MarketingHeader from './components/MarketingHeader'
+import GridBackground from './components/landing/GridBackground'
+import HeroSection from './components/landing/HeroSection'
+import StatsSection from './components/landing/StatsSection'
+import PipelineSequence from './components/landing/PipelineSequence'
+import PricingSection from './components/landing/PricingSection'
+import FeaturesSection from './components/landing/FeaturesSection'
+import Footer from './components/landing/Footer'
+import GradualBlur from './components/GradualBlur'
 
-import React, { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
-import TextPressure from '@/components/TextPressure';
-import {
-  Play,
-  ArrowRight,
-  TrendingUp,
-  Brain,
-  ShieldAlert,
-  Cpu,
-  CheckCircle2,
-  Sparkles,
-  Layers,
-  Zap,
-  Menu,
-  X,
-  ChevronDown,
-  RotateCcw,
-  BarChart3,
-} from 'lucide-react';
-
-export default function CinematicLandingPage() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const [activeStep, setActiveStep] = useState(0);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      setScrollY(currentScroll);
-      setScrolled(currentScroll > 50);
-
-      // Calculate step for autopilot story
-      const storySection = document.getElementById('autopilot-story');
-      if (storySection) {
-        const rect = storySection.getBoundingClientRect();
-        const height = rect.height;
-        const progress = Math.max(0, Math.min(1, -rect.top / (height - window.innerHeight)));
-        const step = Math.min(5, Math.floor(progress * 6));
-        setActiveStep(step);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Hero Parallax Transforms
-  const heroScale = 1 + Math.min(0.08, (scrollY / 1000) * 0.08);
-  const heroOpacity = Math.max(0, 1 - scrollY / 700);
-  const heroY = -Math.min(100, (scrollY / 700) * 100);
-
+export default function LandingPage() {
   return (
+<<<<<<< HEAD
     <div style={{ background: '#050505', color: '#ffffff', fontFamily: 'var(--font-body, sans-serif)', overflowX: 'hidden' }}>
       
       {/* ── TOP NAVIGATION ────────────────────────────────────────── */}
@@ -732,4 +686,29 @@ export default function CinematicLandingPage() {
       `}</style>
     </div>
   );
+=======
+    <>
+      <MarketingHeader />
+      <main style={{ background: '#0a0a0a', position: 'relative' }}>
+        <GridBackground />
+        <HeroSection />
+        <StatsSection />
+        <PipelineSequence />
+        <PricingSection />
+        <FeaturesSection />
+        <Footer />
+        <GradualBlur
+          target="page"
+          position="bottom"
+          height="6rem"
+          strength={2}
+          divCount={5}
+          curve="bezier"
+          exponential={true}
+          opacity={1}
+        />
+      </main>
+    </>
+  )
+>>>>>>> parent of 487479f (.)
 }
