@@ -1,0 +1,40 @@
+// RocketRide Pipeline: creative_evaluation.pipe
+// Critiques concept quality, evaluates brand safety, and assigns confidence and risk scores.
+
+pipeline "creative_evaluation" {
+  description = "Evaluates generated creative concepts for quality, compliance, brand safety, and virality potential"
+
+  input {
+    concept_id     = string
+    script_content = string
+    brand_guidelines = string
+  }
+
+  node "critic_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Ad Quality Critic"
+    prompt = """
+      Critique script {{input.script_content}} for persuasive clarity, pacing, hook strength, and CTA effectiveness.
+      Score viral potential (0-100) and retention likelihood.
+    """
+  }
+
+  node "brand_safety_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Brand Safety & Regulatory Inspector"
+    prompt = """
+      Check script {{input.script_content}} against guidelines: {{input.brand_guidelines}}.
+      Verify compliance, check for prohibited claims or offensive content.
+      Return risk level: 'LOW', 'MEDIUM', or 'HIGH'.
+    """
+  }
+
+  output {
+    quality_score    = "{{critic_agent.output.quality_score}}"
+    brand_risk       = "{{brand_safety_agent.output.risk_level}}"
+    is_approved      = "{{brand_safety_agent.output.is_approved}}"
+    confidence_score = "{{critic_agent.output.confidence_score}}"
+  }
+}

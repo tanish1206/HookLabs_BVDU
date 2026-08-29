@@ -1,0 +1,31 @@
+// RocketRide Pipeline: attribution_report.pipe
+// Synthesizes multi-channel revenue attribution and computes ROAS across creative assets and marketing platforms.
+
+pipeline "attribution_report" {
+  description = "Computes multi-channel revenue attribution and generates executive performance reports"
+
+  input {
+    timeframe        = string
+    channel_metrics  = array(object)
+    creative_metrics = array(object)
+  }
+
+  node "attribution_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Attribution & Data Analytics Engine"
+    prompt = """
+      Synthesize multi-touch revenue attribution for timeframe: {{input.timeframe}}.
+      Break down revenue contribution by platform (Meta, Google, TikTok) and individual creative assets.
+      Calculate true Blended ROAS and incremental revenue lift.
+    """
+  }
+
+  output {
+    total_attributed_revenue = "{{attribution_agent.output.total_revenue}}"
+    blended_roas             = "{{attribution_agent.output.blended_roas}}"
+    top_creative_asset       = "{{attribution_agent.output.top_asset}}"
+    channel_breakdown        = "{{attribution_agent.output.channel_breakdown}}"
+    executive_summary        = "{{attribution_agent.output.summary}}"
+  }
+}

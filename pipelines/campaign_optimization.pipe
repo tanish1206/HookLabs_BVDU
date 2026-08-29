@@ -1,0 +1,41 @@
+// RocketRide Pipeline: campaign_optimization.pipe
+// Formulates budget adjustments & creative swaps, routing high-risk actions to the Human Approval Gate.
+
+pipeline "campaign_optimization" {
+  description = "Recommends or executes campaign actions with built-in risk evaluation and human approval thresholds"
+
+  input {
+    campaign_id     = string
+    current_budget  = number
+    proposed_budget = number
+    action_type     = string // 'budget_increase' | 'pause_creative' | 'launch_variant'
+    confidence      = number
+  }
+
+  node "decision_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Autonomous Campaign Manager"
+    prompt = """
+      Evaluate action: {{input.action_type}} for campaign {{input.campaign_id}}.
+      Current Budget: ${{input.current_budget}}, Proposed Budget: ${{input.proposed_budget}}.
+      Confidence: {{input.confidence}}.
+
+      Rule: Any budget change greater than $100 or budget increase > 20% MUST be flagged as HIGH risk and routed to Human Approval.
+    """
+  }
+
+  node "risk_gate" {
+    type = "decision"
+    condition = "{{decision_agent.output.risk_level}} == 'HIGH' || {{input.proposed_budget}} - {{input.current_budget}} > 100"
+    if_true  = "route_to_human_approval"
+    if_false = "auto_execute"
+  }
+
+  output {
+    action_status      = "{{risk_gate.output.status}}"
+    requires_approval  = "{{risk_gate.output.requires_human_approval}}"
+    risk_level         = "{{decision_agent.output.risk_level}}"
+    reasoning          = "{{decision_agent.output.reasoning}}"
+  }
+}

@@ -1,0 +1,41 @@
+// RocketRide Pipeline: creative_intelligence.pipe
+// Analyzes winning and losing hooks/formats and compounds creative memory over time.
+
+pipeline "creative_intelligence" {
+  description = "Extracts pattern insights from historical creative results and updates compounding creative memory"
+
+  input {
+    creative_results = array(object)
+    audience_segment = string
+  }
+
+  node "audience_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Audience Intelligence Specialist"
+    prompt = """
+      Analyze creative metrics segmented by audience: {{input.audience_segment}}.
+      Determine which message angles, tone, and visual formats resonance highest (CTR lift & ROAS multiplier).
+    """
+  }
+
+  node "memory_builder" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Creative Memory Curator"
+    prompt = """
+      Based on Audience Agent findings: {{audience_agent.output}}
+      Synthesize reusable creative memory patterns:
+      1. Winning hook structure
+      2. Winning format type (e.g. problem-solution, stat lead, UGC)
+      3. Expected ROAS multiplier
+      4. Confidence score (0.0 to 1.0)
+    """
+  }
+
+  output {
+    pattern_memory   = "{{memory_builder.output.patterns}}"
+    confidence_score = "{{memory_builder.output.confidence_score}}"
+    recommendations  = "{{memory_builder.output.recommendations}}"
+  }
+}

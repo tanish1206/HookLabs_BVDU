@@ -1,0 +1,44 @@
+// RocketRide Pipeline: campaign_analysis.pipe
+// Analyzes live campaign performance, pacing, ROAS, and identifies underperforming creative assets.
+
+pipeline "campaign_analysis" {
+  description = "Ingests campaign dataset, calculates pacing against budget, and flags underperforming creatives"
+
+  input {
+    campaign_id   = string
+    records_count = number
+    metrics       = object
+  }
+
+  node "performance_agent" {
+    type  = "agent"
+    model = "openai/gpt-4o"
+    role  = "Senior Performance Marketer"
+    prompt = """
+      You are an expert Performance Marketing Analyst.
+      Analyze the incoming campaign metrics:
+      - Campaign ID: {{input.campaign_id}}
+      - Spend vs Target Budget
+      - CTR, CPC, ROAS, and Conversion Rate
+
+      Identify whether the campaign is pacing on target (target ROAS >= 2.5) or underperforming.
+      Flag specific creative assets with high spend but low conversion rate.
+    """
+  }
+
+  node "pacing_calculator" {
+    type = "tool"
+    tool = "pacing_tool"
+    inputs = {
+      spend = "{{performance_agent.output.spend}}"
+      budget = "{{performance_agent.output.budget}}"
+    }
+  }
+
+  output {
+    status               = "{{performance_agent.output.status}}"
+    pacing_ratio         = "{{pacing_calculator.output.pacing_ratio}}"
+    underperforming_creatives = "{{performance_agent.output.underperformers}}"
+    analysis_summary     = "{{performance_agent.output.summary}}"
+  }
+}
